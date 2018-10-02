@@ -12,7 +12,7 @@ export default class UFO extends React.Component {
         <Entity
           style={{
             transform: [
-              {translate: [-4, -13, -12]},
+              {translate: [-4, -13, -22]},
             ],
           }}
           source={{

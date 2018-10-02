@@ -12,8 +12,8 @@ export default class Fighter extends React.Component {
         <Entity
           style={{
             transform: [
-              {translate: [-50, -20, 0]},
-              {scale: [5, 5, 5]},
+              {translate: [0, -25, 75]},
+              {scale: [7.5, 7.5, 7.5]},
               {rotateY: 0},
             ],
           }}

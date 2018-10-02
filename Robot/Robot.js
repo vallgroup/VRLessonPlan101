@@ -12,7 +12,7 @@ export default class Robot extends React.Component {
         <Entity
           style={{
             transform: [
-              {translate: [-9, -15, -15]},
+              {translate: [-9, -15, -25]},
               {scale: [10, 10, 10]},
               {rotateY: 0},
             ],

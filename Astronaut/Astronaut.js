@@ -12,7 +12,7 @@ export default class Astronaut extends React.Component {
         <Entity
           style={{
             transform: [
-              {translate: [-5, -15, -15]},
+              {translate: [-5, -15, -25]},
             ],
           }}
           source={{
