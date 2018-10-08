@@ -4,6 +4,8 @@ import {
   View,
 } from 'react-360';
 
+import VRLessonPlan101Controller from './Controller/Controller'
+
 import Satellite from './Satellite/Satellite'
 import UFO from './UFO/UFO'
 import Astronaut from './Astronaut/Astronaut'
@@ -33,7 +35,6 @@ export default class VRLessonPlan101 extends React.Component {
           orbit={true}
           orbitSpeed={2} />
 
-
       {/* */}
         <UFO />
         <Astronaut />
@@ -46,3 +47,4 @@ export default class VRLessonPlan101 extends React.Component {
 };
 
 AppRegistry.registerComponent('VRLessonPlan101', () => VRLessonPlan101);
+AppRegistry.registerComponent('VRLessonPlan101Controller', () => VRLessonPlan101Controller);
