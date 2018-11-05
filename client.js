@@ -1,63 +1,68 @@
 // This file contains the boilerplate to execute your React app.
 // If you want to modify your application's content, start in "index.js"
 
-import {Math as VRMath, ReactInstance, Location} from 'react-360-web';
+import {
+  Module,
+  Location,
+  ReactInstance,
+} from 'react-360-web';
+import MoveCameraModule from './NativeModules/MoveCameraModule'
 
-const cameraDirection = [0, 0, -1];
-
-const _cameraMounted = new Location( [0, 0, 0] )
+// set the camera view location
+const CameraView = new Location([0, 0, 0]);
 
 function init(bundle, parent, options = {}) {
+  // instantiate our MoveCameraModule
+  const moveCamera = new MoveCameraModule();
+
+  // instantiate our VR
   const r360 = new ReactInstance(bundle, parent, {
     // Add custom options here
     fullScreen: true,
-    frame: () => {
-      console.log(r360.getCameraPosition())
-      // console.log(r360.getRotation())
-
-      const cameraQuat = r360.getCameraQuaternion();
-      console.log(cameraQuat)
-      cameraDirection[0] = 0;
-      cameraDirection[1] = 0;
-      cameraDirection[2] = -1;
-      // cameraDirection will point out from the view of the camera,
-      // we can use it to compute surface angles
-      VRMath.rotateByQuaternion(cameraDirection, cameraQuat);
-      console.log( cameraDirection )
-      const cx = cameraDirection[0];
-      const cy = cameraDirection[1];
-      const cz = cameraDirection[2];
-      const horizAngle = Math.atan2(cx, -cz);
-      const vertAngle = Math.asin(cy / Math.sqrt(cx * cx + cy * cy + cz * cz));
-      // horizontalPanel.setAngle(horizAngle, -0.5);
-      console.log(horizAngle, vertAngle);
-
-      // _cameraMounted.setWorldPosition(cx, cy, cz)
-      _cameraMounted.setWorldRotation(cx, cy, cz)
-    },
     ...options,
+    frame: () => {
+      fixCameraViewPosition();
+    },
+    nativeModules: [
+      moveCamera,
+    ]
   });
 
-  // Render your app content to the default cylinder surface
-  // r360.renderToSurface(
-  //   r360.createRoot('VRLessonPlan101', { /* initial props */ }),
-  //   r360.getDefaultSurface()
-  // );
+  // set the VR for our MoveCameraModule
+  moveCamera.setVR(r360);
 
+  // render our world to the default location
   r360.renderToLocation(
     r360.createRoot('VRLessonPlan101'),
     r360.getDefaultLocation(),
   );
 
+  // render our cameraView to a fixed position
   r360.renderToLocation(
     r360.createRoot('VRLessonPlan101Controller'),
-    _cameraMounted,
+    CameraView,
   );
-
-  console.log(r360)
 
   // Load the initial environment
   r360.compositor.setBackground(r360.getAssetURL('360_world.jpg'));
+
+  // set the camera view position to follow the camera
+  function fixCameraViewPosition() {
+    // fix CameraView to the camera
+    const cameraQuat = r360.getCameraQuaternion()
+    CameraView.setWorldRotation(
+      cameraQuat[0],
+      cameraQuat[1],
+      cameraQuat[2],
+      cameraQuat[3]
+    );
+    const cameraPos = r360.getCameraPosition()
+    CameraView.setWorldPosition(
+      cameraPos[0],
+      cameraPos[1],
+      cameraPos[2]
+    );
+  }
 }
 
 window.React360 = {init};
