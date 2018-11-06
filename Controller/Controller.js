@@ -6,6 +6,7 @@ import {
   VrHeadModel,
   NativeModules,
 } from 'react-360';
+import JetpackMode from './JetpackMode'
 
 const Updater = NativeModules.MoveCameraModule;
 
@@ -22,14 +23,19 @@ export default class VRLessonPlan101Controller extends React.Component {
   render() {
     return (
       <View style={{
+        position: "absolute",
       	transform: [
-      		{translate: [0, 0, -2]}
+      		{translate: [0, -1, -2]}
       	],
+        layoutOrigin: [0.5, 0.5],
       }}>
+        <JetpackMode />
         <VrButton
-          style={{}}
+          style={{
+
+          }}
           onClick={this.moveForward.bind(this)}>
-          <Text>Go!</Text>
+          <Text>GO!</Text>
         </VrButton>
       </View>
     );
